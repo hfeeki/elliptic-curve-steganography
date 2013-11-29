@@ -18,7 +18,6 @@
 
 from curves import SelectCurve
 from Crypto.Hash import RIPEMD, SHA512
-from ellipticcurve import EllipticCurve
 from imageops import EncodeImageInfo
 
 def PublicKeyECIES(curve_name, pwd, im):

@@ -16,9 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from curves import SelectCurve
 from decrypt import DecryptECIES
-from ellipticcurve import EllipticCurve
 from math import ceil
 
 def EncodeImageInfo(bit_string, im):
