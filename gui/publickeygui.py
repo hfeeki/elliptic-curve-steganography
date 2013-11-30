@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ecs import CurveList, PublicKeyECIES
+from ecs import PredefinedCurves, PublicKeyECIES
 from PIL import Image
 from PySide import QtGui
 import common
@@ -45,7 +45,7 @@ class PKGui(QtGui.QWidget):
         self.curveGroup = QtGui.QButtonGroup()
         self.curveButtons = []
         # Gets the list of curves, creates buttons, and adds them to a button group and the GUI layout.
-        for curve in CurveList():
+        for curve in sorted(PredefinedCurves().curve_names()):
             currentButton = QtGui.QRadioButton(curve,self)
             self.curveButtons.append(currentButton)
             self.curveGroup.addButton(currentButton)

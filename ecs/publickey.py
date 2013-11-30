@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from curves import SelectCurve
+from curves import PredefinedCurves
 from Crypto.Hash import RIPEMD, SHA512
 from imageops import EncodeImageInfo
 
@@ -27,7 +27,7 @@ def PublicKeyECIES(curve_name, pwd, im):
     # ECIES Public Key Creation
     # --------------------------
 
-    E, N, A = SelectCurve(curve_name)
+    E = PredefinedCurves(curve_name)
 
     # Generate secret key s via a password hashing.
     # Use a concatonation of two hash functions to make sure we have enough characters to get a full strength secret key. 
@@ -35,14 +35,14 @@ def PublicKeyECIES(curve_name, pwd, im):
     hashpwd = SHA512.new(pwd).hexdigest() + RIPEMD.new(pwd).hexdigest()
 
     # Convert from hex to int, make hashpwd the same length as the order of the point we're using, then take it modulo order.
-    s = int(str(int(hashpwd,16))[0: len(str(N))]) % N
+    s = int(str(int(hashpwd,16))[0: len(str(E.N))]) % E.N
 
     # If s = 0 or s = 1 (very unlikely), we want to use a different value.
     if s < 2:
-        s = N/2
+        s = E.N/2
 
     # Use the secret key s to generate the public key.
-    B = E.multPoint(s, A)
+    B = E.multPoint(s, E.A)
 
     # -------------------------------------------------------------
     # Create a binary string from the given public key information

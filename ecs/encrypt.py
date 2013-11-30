@@ -19,21 +19,21 @@
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA512, RIPEMD
 from Crypto.Random import random
-from curves import SelectCurve
+from curves import PredefinedCurves
 from imageops import EncodeImageInfo
 import base64
 
 def EncryptECIES(curve_name, B, msg, im):
     '''Perform ECIES encryption, create the associated binary string, and pass to the image encoder.'''
-    E, N, A = SelectCurve(curve_name)
+    E = PredefinedCurves(curve_name)
 
     # Make sure the length is correct, otherwise add white space.  For AES message length must be multiple of 16.
     while len(msg) % 16 !=0:
         msg+=' '
 
     # Begin ECIES Encryption.
-    k = random.randint(2, N-1)
-    R = E.multPoint(k, A)
+    k = random.randint(2, E.N-1)
+    R = E.multPoint(k, E.A)
     Z = E.multPoint(k, B)
     
     RZ = str(R)+str(Z)
