@@ -18,19 +18,19 @@
 
 from Crypto.Cipher import AES
 from Crypto.Hash import RIPEMD, SHA512
-from curves import SelectCurve
+from curves import PredefinedCurves
 import base64
 
 def DecryptECIES(curve_name, R, enc, t, pwd):
     '''Performs ECIES decryption.'''
     # Setup for Decryption
-    E, N = SelectCurve(curve_name)[0:2]
+    E = PredefinedCurves(curve_name)
     
     # Get secret key s
     hashpwd = SHA512.new(pwd).hexdigest() + RIPEMD.new(pwd).hexdigest()
-    s = int(str(int(hashpwd,16))[0: len(str(N))]) % N
+    s = int(str(int(hashpwd,16))[0: len(str(E.N))]) % E.N
     if s < 2:
-        s = N/2
+        s = E.N/2
 
     # Begin Decryption
     Z = E.multPoint(s,R)
