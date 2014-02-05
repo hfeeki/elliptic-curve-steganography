@@ -1,18 +1,18 @@
 #!/usr/bin/env python
-# 
+#
 # Elliptic Curve Steganography
 # Copyright (C) 2013 jschendel@github
-# 
+#
 # Elliptic Curve Steganography is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # Elliptic Curve Steganography is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -20,14 +20,15 @@ from gui import HomeGUI, PKGui, EncryptGui, DecryptGui
 from PySide import QtGui
 import sys
 
+
 class MainWindow(QtGui.QMainWindow):
-    '''Creates the Main Window for the GUI.'''    
+    '''Creates the Main Window for the GUI.'''
     def __init__(self):
         '''Initializes the GUI.'''
         super(MainWindow, self).__init__()
         self.initUI()
-        
-    def initUI(self):               
+
+    def initUI(self):
         '''Constructs the user interface.'''
         self.setCentralWidget(HomeGUI())
 
@@ -63,7 +64,7 @@ class MainWindow(QtGui.QMainWindow):
 
         aboutAction = QtGui.QAction(QtGui.QIcon('gui\icons\About.png'), 'About', self)
         aboutAction.setStatusTip('About')
-        helpAction.setShortcut('Ctrl+A') 
+        helpAction.setShortcut('Ctrl+A')
 
 
         # Create File Menu and Tool Bar and add Actions to them.
@@ -81,7 +82,6 @@ class MainWindow(QtGui.QMainWindow):
         helpMenu.addAction(helpAction)
         helpMenu.addAction(aboutAction)
 
-
         toolbar = self.addToolBar('ToolBar')
         toolbar.addAction(homeAction)
         toolbar.addAction(newkeyAction)
@@ -92,7 +92,7 @@ class MainWindow(QtGui.QMainWindow):
 
         # Main Window Parameters
         self.setWindowTitle('Elliptic Curve Steganography')
-        self.setWindowIcon(QtGui.QIcon('gui\icons\ecs.png')) 
+        self.setWindowIcon(QtGui.QIcon('gui\icons\ecs.png'))
         self.resize(567,650)
         self.move(QtGui.QDesktopWidget().availableGeometry().center() - self.frameGeometry().center())
         self.show()
@@ -107,8 +107,8 @@ class MainWindow(QtGui.QMainWindow):
             self.setCentralWidget(EncryptGui())
         elif self.sender().text() == 'Decrypt':
             self.setCentralWidget(DecryptGui())
-        
-        
+
+
 def main():
     '''Executes the GUI.'''
     app = QtGui.QApplication(sys.argv)
