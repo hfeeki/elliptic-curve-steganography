@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# 
+#
 # Elliptic Curve Steganography
 # Copyright (C) 2013 jschendel@github
-# 
+#
 # Elliptic Curve Steganography is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # Elliptic Curve Steganography is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ellipticcurve import EllipticCurve
+
 
 class PredefinedCurves(EllipticCurve):
     '''Returns a selected Elliptic Curve'''
@@ -33,7 +34,7 @@ class PredefinedCurves(EllipticCurve):
 
     def curve_names(self):
         return self.curves.keys()
-                        
+
     def _P192(self):
         '''NIST Curve P-192'''
         self.p = 6277101735386680763835789423207666416083908700390324961279
@@ -76,7 +77,7 @@ class PredefinedCurves(EllipticCurve):
 
     def _P521(self):
         '''NIST Curve P-521'''
-        self.p = 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151 
+        self.p = 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151
         self.N = 6864797660130609714981900799081393217269435300143305409394463459185543183397655394245057746333217197532963996371363321113864768612440380340372808892707005449
         self.a = -3
         self.b = int("051953eb9618e1c9a1f929a21a0b68540eea2da725b99b315f3b8b489918ef109e156193951ec7e937b1652c0bd3bb1bf073573df883d2c34f1ef451fd46b503f00", 16)
