@@ -1,18 +1,18 @@
 #!/usr/bin/env python
-# 
+#
 # Elliptic Curve Steganography
 # Copyright (C) 2013 jschendel@github
-# 
+#
 # Elliptic Curve Steganography is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # Elliptic Curve Steganography is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -23,6 +23,7 @@ import common
 import cStringIO
 import urllib
 
+
 class PKGui(QtGui.QWidget):
     '''Creates the GUI page for Public Key Creation.'''
     def __init__(self):
@@ -30,12 +31,13 @@ class PKGui(QtGui.QWidget):
         super(PKGui, self).__init__()
         self.initUI()
         # Initialize the missing info list here.
-        self.missingInfo = [] 
+        self.missingInfo = []
 
     def initUI(self):
         '''Constructs the Public Key GUI Layout.'''
-        
-    	# Curve Selection Portion of the Layout.
+        # --------------------------------------
+        # Curve Selection Portion of the Layout
+        # --------------------------------------
         self.curveLabel = QtGui.QLabel('<h3><u>Select Curve</u></h3>', self)
 
         curveVBox = QtGui.QVBoxLayout()
@@ -51,10 +53,11 @@ class PKGui(QtGui.QWidget):
             self.curveGroup.addButton(currentButton)
             curveVBox.addWidget(currentButton)
 
-
+        # --------------------------------------
         # Image Selection Portion of the Layout
+        # --------------------------------------
         self.selectImageLabel = QtGui.QLabel('<h3><u>Select Image to Embed Public Key</u></h3>', self)
-        
+
         self.fromHD = QtGui.QRadioButton("From Hard Drive:", self)
         self.fromHDText = QtGui.QLineEdit()
         self.fromHDText.setReadOnly(True)
@@ -81,8 +84,9 @@ class PKGui(QtGui.QWidget):
         selectImageGrid.setColumnMinimumWidth(1,400)
         selectImageGrid.setColumnStretch(3,1)
 
-
+        # ----------------------------------------
         # Password Creation Portion of the Layout
+        # ----------------------------------------
         self.createPasswordLabel = QtGui.QLabel('<h3><u>Create Public Key Password</u></h3>', self)
         self.passwordLabel = QtGui.QLabel('Password:', self)
         self.passwordText = QtGui.QLineEdit()
@@ -90,7 +94,7 @@ class PKGui(QtGui.QWidget):
         self.cPasswordLabel = QtGui.QLabel('Confirm Password:', self)
         self.cPasswordText = QtGui.QLineEdit()
         self.cPasswordText.setEchoMode(QtGui.QLineEdit.Password)
-        
+
         passwordGrid = QtGui.QGridLayout()
         passwordGrid.setVerticalSpacing(5)
         passwordGrid.setHorizontalSpacing(2)
@@ -102,16 +106,18 @@ class PKGui(QtGui.QWidget):
         passwordGrid.setColumnMinimumWidth(1,300)
         passwordGrid.setColumnStretch(3,1)
 
-
+        # -----------------------------
         # The Create Public Key Button
+        # -----------------------------
         createPKButton = QtGui.QPushButton('Create Public Key', self)
         createPKButton.clicked.connect(self.checkInfo)
         createPKHBox = QtGui.QHBoxLayout()
         createPKHBox.addWidget(createPKButton)
         createPKHBox.addStretch(1)
 
-
+        # --------------------------------------
         # The Main Layout of the Public Key GUI
+        # --------------------------------------
         mainVBox = QtGui.QVBoxLayout()
         mainVBox.setSpacing(25)
         mainVBox.addLayout(curveVBox)
@@ -129,7 +135,7 @@ class PKGui(QtGui.QWidget):
             self.fromHD.setChecked(True)
 
     def toggleFromInternet(self):
-        '''Selects the 'From Internet' radio button if the text field is changed and non-empty''' 
+        '''Selects the 'From Internet' radio button if the text field is changed and non-empty'''
         if self.fromInternetText.text() != '':
             self.fromInternet.setChecked(True)
         elif self.fromHDText.text() != '':
@@ -141,24 +147,24 @@ class PKGui(QtGui.QWidget):
         self.missingInfo = []
 
         # Check that a curve has been selected.
-    	if self.curveGroup.checkedId() == -1:
+        if self.curveGroup.checkedId() == -1:
             self.missingInfo.append(self.curveLabel)
-        
-    	# Check that an image location has been selected and location information is present.
-        if self.selectGroup.checkedId() ==-1:
+
+        # Check that an image location has been selected and location information is present.
+        if self.selectGroup.checkedId() == -1:
             self.missingInfo.append(self.selectImageLabel)
         elif self.selectGroup.checkedId() == 1 and self.fromHDText.text() == '':
-            self.missingInfo.append(self.fromHD)    
+            self.missingInfo.append(self.fromHD)
         elif self.selectGroup.checkedId() == 2 and self.fromInternetText.text() == '':
             self.missingInfo.append(self.fromInternet)
-            	
+
         # Check that a password is filled in and that the two password fields match.
         if self.passwordText.text() == '':
             self.missingInfo.append(self.createPasswordLabel)
-    	elif self.passwordText.text() != self.cPasswordText.text():
+        elif self.passwordText.text() != self.cPasswordText.text():
             self.missingInfo.append(self.passwordLabel)
             self.missingInfo.append(self.cPasswordLabel)
-            
+
         # Turns missing information labels red, or attempts to load the image if we have no missing information.
         if self.missingInfo != []:
             common.turnRed(self.missingInfo)
@@ -174,7 +180,6 @@ class PKGui(QtGui.QWidget):
                     self.missingInfo.append(self.fromHD)
                     common.turnRed(self.missingInfo)
                     common.popUpText(self,'Error: Cannot open image.  Please try another image.', 'Error')
-
 
             elif self.selectGroup.checkedId() == 2:
                 try:
@@ -195,13 +200,13 @@ class PKGui(QtGui.QWidget):
         # Checks if the image was created correctly and, if so, saves it.
         if type(publicKeyImage) == str:
             common.popUpText(self, publicKeyImage, 'Error')
-        
+
         else:
             saveLocation, _ = QtGui.QFileDialog.getSaveFileName(self, 'Save Public Key Image', 'public_key', '.png Files (*.png)')
-            
+
             if saveLocation != '':
                 try:
-                    publicKeyImage.save(saveLocation, "PNG", quality = 95)
+                    publicKeyImage.save(saveLocation, 'PNG', quality=95)
                     common.popUpText(self, 'Public Key Image Successfully Created!', 'Success')
 
                 except:
